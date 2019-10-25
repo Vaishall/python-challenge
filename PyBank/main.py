@@ -23,6 +23,8 @@ with open(csvpath, newline='') as csvfile:
 	bigincmonth=first[0]
 	bigdecmonth=first[0]
 
+	initial_change=int(first[1]) #we save this to calculate average change in profit/losses later
+
 
 	#now we run for the rest of the months, cumulating a total and keeping track of any larger or smaller values. We also add any months with equally large/small profits/losses to our string in our elseif
 	for row in csvreader:
@@ -39,13 +41,13 @@ with open(csvpath, newline='') as csvfile:
 		elif bigdec==int(row[1]):
 			bigdecmonth = bigdecmonth + ", " + row[0] #likewise for more ties
 
-
+final_change=int(row[1]) #we save this for our average change calculation
 #now we print our values
 print("Financial Analysis")
 print("----------------------------")
 print(f"Total Months: {months}")
 print(f"Total: "+'${:,.0f}'.format(total))
-print(f"Average Change: "+'${:,.2f}'.format(total/months))
+print(f"Average Change: "+'${:,.2f}'.format((final_change-initial_change)/(months-1))) #average change calculation
 print(f"Greatest Increase in Profits: {bigincmonth} ({'${:,.0f}'.format(biginc)})")
 print(f"Greatest Decrease in Profits: {bigdecmonth} ({'${:,.0f}'.format(bigdec)})")
 
@@ -56,7 +58,7 @@ file.write("Financial Analysis\n")
 file.write("----------------------------\n")
 file.write(f"Total Months: {months}\n")
 file.write(f"Total: "+'${:,.0f}'.format(total)+"\n")
-file.write(f"Average Change: "+'${:,.2f}'.format(total/months)+"\n")
+file.write(f"Average Change: "+'${:,.2f}'.format((final_change-initial_change)/(months-1))+"\n")
 file.write(f"Greatest Increase in Profits: {bigincmonth} ({'${:,.0f}'.format(biginc)})\n")
 file.write(f"Greatest Decrease in Profits: {bigdecmonth} ({'${:,.0f}'.format(bigdec)})\n")
 file.close()
